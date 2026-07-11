@@ -4,7 +4,7 @@ import { pricing } from "../data/restaurant";
 
 <section class="section" id="formules">
   <div class="container">
-    <div class="section-head">
+    <div class="section-head" data-reveal>
       <p class="eyebrow">Formule unique</p>
       <h2>À volonté, sans complication</h2>
       <p class="section-desc">
@@ -13,7 +13,7 @@ import { pricing } from "../data/restaurant";
       </p>
     </div>
 
-    <div class="pricing-grid">
+    <div class="pricing-grid" data-reveal-stagger>
       <article class="pricing-card">
         <header>
           <h3>Adulte</h3>
@@ -98,10 +98,22 @@ import { pricing } from "../data/restaurant";
     border: 1px solid var(--line);
     border-radius: 4px;
     padding: 32px;
+    transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+  }
+
+  .pricing-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(55, 233, 255, 0.4);
+    box-shadow: 0 16px 40px rgba(55, 233, 255, 0.12);
   }
 
   .pricing-card-accent {
     border-color: rgba(217, 164, 65, 0.35);
+  }
+
+  .pricing-card-accent:hover {
+    border-color: rgba(255, 63, 160, 0.45);
+    box-shadow: 0 16px 40px rgba(255, 63, 160, 0.14);
   }
 
   .pricing-card header {
@@ -144,10 +156,11 @@ import { pricing } from "../data/restaurant";
   }
 
   .price {
-    font-family: var(--font-display);
+    font-family: var(--font-mono);
     color: var(--gold);
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 14px rgba(217, 164, 65, 0.3);
   }
 
   .pricing-weekend-note {

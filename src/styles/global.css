@@ -1,21 +1,25 @@
-@import url("https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
 
 :root {
-  /* Palette — extraite de l'identité réelle de Yukimi (enso rouge du logo,
-     lanternes dorées, papier washi crème, sakura). */
-  --ink: #14100d;
-  --ink-2: #1c1611;
-  --panel: #211a14;
-  --line: rgba(243, 232, 216, 0.12);
+  /* Palette — nuit d'Akihabara : fond profond violet-noir, néons cyan/magenta
+     en accent moderne, rouge et or conservés comme signature de marque
+     (logo, CTA de réservation) pour ne pas perdre l'identité réelle de Yukimi. */
+  --ink: #0a0714;
+  --ink-2: #130b24;
+  --panel: #170f2b;
+  --line: rgba(224, 214, 255, 0.12);
   --red: #ad1a13;
   --red-soft: #d9503b;
   --gold: #d9a441;
+  --neon-pink: #ff3fa0;
+  --neon-cyan: #37e9ff;
   --blush: #e7b9ac;
-  --cream: #f3e8d8;
-  --muted: #a7947f;
+  --cream: #f5eefb;
+  --muted: #9c90bf;
 
   --font-display: "Shippori Mincho", serif;
   --font-body: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 
   --container: 1180px;
 }
@@ -78,7 +82,7 @@ button {
 }
 
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--neon-cyan);
   outline-offset: 3px;
 }
 
@@ -93,33 +97,38 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-family: var(--font-body);
-  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--neon-cyan);
   font-weight: 500;
+  text-shadow: 0 0 12px rgba(55, 233, 255, 0.45);
 }
 
 .eyebrow::before {
   content: "";
   width: 22px;
   height: 1px;
-  background: var(--gold);
+  background: var(--neon-cyan);
+  box-shadow: 0 0 6px var(--neon-cyan);
 }
 
-/* Motif seigaiha (vagues japonaises) — utilisé en filigrane sur certaines sections,
-   cohérent avec le fond des cartes du restaurant. */
+/* Motif seigaiha (vagues japonaises) en filigrane, croisé avec un léger
+   quadrillage néon — le clin d'oeil traditionnel et l'énergie Akihabara. */
 .seigaiha {
-  background-image: radial-gradient(
-    circle at 50% 0%,
-    transparent 0,
-    transparent 40%,
-    var(--line) 41%,
-    var(--line) 42%,
-    transparent 43%
-  );
-  background-size: 56px 28px;
+  background-image:
+    linear-gradient(rgba(55, 233, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(55, 233, 255, 0.05) 1px, transparent 1px),
+    radial-gradient(
+      circle at 50% 0%,
+      transparent 0,
+      transparent 40%,
+      var(--line) 41%,
+      var(--line) 42%,
+      transparent 43%
+    );
+  background-size: 64px 64px, 64px 64px, 56px 28px;
 }
 
 .btn {
@@ -135,7 +144,8 @@ button {
   letter-spacing: 0.02em;
   cursor: pointer;
   border: 1px solid transparent;
-  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease,
+    color 0.25s ease, box-shadow 0.25s ease;
   white-space: nowrap;
 }
 
@@ -146,10 +156,12 @@ button {
 .btn-gold {
   background: var(--gold);
   color: var(--ink);
+  box-shadow: 0 0 0 rgba(217, 164, 65, 0);
 }
 
 .btn-gold:hover {
   background: #e8b862;
+  box-shadow: 0 0 26px rgba(217, 164, 65, 0.55);
 }
 
 .btn-outline {
@@ -159,8 +171,9 @@ button {
 }
 
 .btn-outline:hover {
-  border-color: var(--gold);
-  color: var(--gold);
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 20px rgba(55, 233, 255, 0.3);
 }
 
 .section {
@@ -201,4 +214,58 @@ button {
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
+}
+
+/* Lueurs ambiantes façon enseignes néon — utilisées en fond de section */
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  opacity: 0.35;
+  animation: glow-pulse 7s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.08);
+  }
+}
+
+/* Révélation au défilement, façon Framer */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+[data-reveal-stagger] > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+[data-reveal-stagger].is-visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal-stagger] > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

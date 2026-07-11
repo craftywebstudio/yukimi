@@ -4,7 +4,7 @@ import { menuCategories } from "../data/menu";
 
 <section class="section seigaiha" id="carte">
   <div class="container">
-    <div class="section-head">
+    <div class="section-head" data-reveal>
       <p class="eyebrow">La carte</p>
       <h2>Tout ce que vous pouvez commander</h2>
       <p class="section-desc">
@@ -13,7 +13,7 @@ import { menuCategories } from "../data/menu";
       </p>
     </div>
 
-    <div class="carte-tabs" role="tablist" aria-label="Catégories de la carte">
+    <div class="carte-tabs" role="tablist" aria-label="Catégories de la carte" data-reveal>
       {menuCategories.map((cat, i) => (
         <button
           class="carte-tab"
@@ -57,6 +57,17 @@ import { menuCategories } from "../data/menu";
   const tabs = document.querySelectorAll<HTMLButtonElement>(".carte-tab");
   const panels = document.querySelectorAll<HTMLElement>(".carte-panel");
 
+  function playInStagger(panel: HTMLElement) {
+    const items = panel.querySelectorAll<HTMLElement>(".carte-list li");
+    items.forEach((item, index) => {
+      item.style.animation = "none";
+      // force reflow so the animation can restart every time a tab is opened
+      void item.offsetWidth;
+      item.style.animationDelay = `${Math.min(index, 14) * 30}ms`;
+      item.style.animation = "carte-item-in 0.45s ease forwards";
+    });
+  }
+
   tabs.forEach((tab) => {
     tab.addEventListener("click", () => {
       tabs.forEach((t) => t.setAttribute("aria-selected", "false"));
@@ -64,10 +75,16 @@ import { menuCategories } from "../data/menu";
 
       const target = tab.dataset.target;
       panels.forEach((panel) => {
-        panel.style.display = panel.id === `panel-${target}` ? "" : "none";
+        const match = panel.id === `panel-${target}`;
+        panel.style.display = match ? "" : "none";
+        if (match) playInStagger(panel);
       });
     });
   });
+
+  // joue l'animation d'entrée sur le premier panneau visible au chargement
+  const firstPanel = document.querySelector<HTMLElement>(".carte-panel");
+  if (firstPanel) playInStagger(firstPanel);
 </script>
 
 <style>
@@ -93,18 +110,22 @@ import { menuCategories } from "../data/menu";
     border-radius: 2px;
     font-size: 0.85rem;
     cursor: pointer;
-    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+    transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease,
+      box-shadow 0.25s ease, transform 0.2s ease;
   }
 
   .carte-tab:hover {
     color: var(--cream);
-    border-color: var(--gold);
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 16px rgba(55, 233, 255, 0.25);
+    transform: translateY(-2px);
   }
 
   .carte-tab[aria-selected="true"] {
     background: var(--red);
     border-color: var(--red);
     color: var(--cream);
+    box-shadow: 0 0 20px rgba(173, 26, 19, 0.4);
   }
 
   .carte-panel-sub {
@@ -113,6 +134,7 @@ import { menuCategories } from "../data/menu";
     margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
+    font-family: var(--font-mono);
   }
 
   .carte-list {
@@ -133,6 +155,24 @@ import { menuCategories } from "../data/menu";
   .carte-list li {
     padding: 14px 0;
     border-bottom: 1px solid var(--line);
+    opacity: 0;
+    transition: background 0.2s ease, padding-left 0.2s ease;
+  }
+
+  .carte-list li:hover {
+    background: linear-gradient(90deg, rgba(55, 233, 255, 0.05), transparent 70%);
+    padding-left: 10px;
+  }
+
+  @keyframes carte-item-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .carte-item-name {
@@ -156,5 +196,13 @@ import { menuCategories } from "../data/menu";
     margin-top: 4px;
     color: var(--muted);
     font-size: 0.82rem;
+    font-family: var(--font-mono);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .carte-list li {
+      opacity: 1;
+      animation: none !important;
+    }
   }
 </style>

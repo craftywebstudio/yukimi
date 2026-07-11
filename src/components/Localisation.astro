@@ -4,7 +4,7 @@ import { restaurant, openingHours } from "../data/restaurant";
 
 <section class="section seigaiha" id="localisation">
   <div class="container loc-grid">
-    <div>
+    <div data-reveal>
       <p class="eyebrow">Où nous trouver</p>
       <h2>Rue de Galata, Montpellier</h2>
       <p class="loc-address">{restaurant.address.full}</p>
@@ -34,7 +34,7 @@ import { restaurant, openingHours } from "../data/restaurant";
       </div>
     </div>
 
-    <div class="loc-map">
+    <div class="loc-map" data-reveal>
       <iframe
         src={restaurant.mapsEmbedUrl}
         title="Localisation du restaurant Yukimi sur Google Maps"
@@ -73,6 +73,11 @@ import { restaurant, openingHours } from "../data/restaurant";
 
   .hours-table tr {
     border-bottom: 1px solid var(--line);
+    transition: background 0.2s ease;
+  }
+
+  .hours-table tr:hover {
+    background: linear-gradient(90deg, rgba(55, 233, 255, 0.05), transparent 70%);
   }
 
   .hours-table th,
@@ -108,6 +113,12 @@ import { restaurant, openingHours } from "../data/restaurant";
     overflow: hidden;
     border: 1px solid var(--line);
     min-height: 380px;
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .loc-map:hover {
+    border-color: rgba(55, 233, 255, 0.4);
+    box-shadow: 0 0 30px rgba(55, 233, 255, 0.15);
   }
 
   .loc-map iframe {

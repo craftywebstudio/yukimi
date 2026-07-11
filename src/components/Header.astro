@@ -140,11 +140,28 @@ const navLinks = [
     opacity: 0.85;
     transition: opacity 0.2s ease, color 0.2s ease;
     position: relative;
+    padding-bottom: 4px;
+  }
+
+  .nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 1px;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 8px var(--neon-cyan);
+    transition: width 0.3s ease;
   }
 
   .nav a:hover {
     opacity: 1;
-    color: var(--gold);
+    color: var(--neon-cyan);
+  }
+
+  .nav a:hover::after {
+    width: 100%;
   }
 
   .header-actions {
@@ -220,7 +237,7 @@ const navLinks = [
       padding: 16px 24px 24px;
     }
 
-    .mobile-nav a {
+    .mobile-nav a:not(.btn) {
       padding: 10px 0;
       border-bottom: 1px solid var(--line);
       font-size: 0.95rem;
