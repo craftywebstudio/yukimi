@@ -1,8 +1,45 @@
 ---
 const photos = [
-  { src: "/images/interieur-1.jpg", alt: "Entrée du restaurant Yukimi, décor japonais et lanternes" },
-  { src: "/images/plateau.jpg", alt: "Plateau de sushi, sashimi, yakitori et gyoza" },
-  { src: "/images/interieur-2.jpg", alt: "Intérieur du restaurant Yukimi" },
+  {
+    src: "/images/gallery-enseignes.jpg",
+    alt: "Enseignes lumineuses japonaises suspendues au plafond du restaurant",
+    caption: "Enseignes lumineuses",
+  },
+  {
+    src: "/images/gallery-salle.jpg",
+    alt: "Salle du restaurant avec fresque murale façon rue de Dotonbori",
+    caption: "La salle",
+  },
+  {
+    src: "/images/gallery-ombrelles.jpg",
+    alt: "Plafond d'ombrelles japonaises colorées au-dessus du bar",
+    caption: "Le plafond d'ombrelles",
+  },
+  {
+    src: "/images/gallery-comptoir.jpg",
+    alt: "Comptoir du bar avec bannières Yukimi et lanternes",
+    caption: "Le comptoir",
+  },
+  {
+    src: "/images/gallery-totoro.jpg",
+    alt: "Statue Totoro sous l'enseigne néon Yukimi 一番街",
+    caption: "Coin Totoro",
+  },
+  {
+    src: "/images/gallery-robot.jpg",
+    alt: "Robot serveur apportant un plateau de sushi et sashimi",
+    caption: "Service par robot",
+  },
+  {
+    src: "/images/gallery-neon-ceiling.jpg",
+    alt: "Ombrelles et enseignes lumineuses façon rue d'Akihabara",
+    caption: "Ambiance Akihabara",
+  },
+  {
+    src: "/images/gallery-carte.jpg",
+    alt: "Couverture du menu Yukimi, cuir noir et illustration rouge",
+    caption: "Le menu",
+  },
 ];
 ---
 
@@ -10,44 +47,157 @@ const photos = [
   <div class="container">
     <div class="section-head" data-reveal>
       <p class="eyebrow">Ambiance</p>
-      <h2>Un izakaya au cœur de Montpellier</h2>
+      <h2>Un bout d'Akihabara au cœur de Montpellier</h2>
+      <p class="section-desc">Cliquez sur une photo pour l'agrandir.</p>
     </div>
 
     <div class="gallery-grid" data-reveal-stagger>
-      {photos.map((photo) => (
-        <figure class="gallery-item">
+      {photos.map((photo, i) => (
+        <button class="gallery-item" data-index={i} type="button" aria-label={`Agrandir : ${photo.caption}`}>
           <img src={photo.src} alt={photo.alt} loading="lazy" />
           <span class="gallery-glow" aria-hidden="true"></span>
-        </figure>
+          <span class="gallery-caption">{photo.caption}</span>
+          <span class="gallery-zoom-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.6"></circle>
+              <path d="M20 20L15.2 15.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
+              <path d="M10.5 8V13M8 10.5H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
+            </svg>
+          </span>
+        </button>
       ))}
     </div>
   </div>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Fermer">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M5 5L19 19M19 5L5 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+    </button>
+    <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Photo précédente">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 5L8 12L15 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </button>
+    <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Photo suivante">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </button>
+    <figure class="lightbox-figure">
+      <img id="lightbox-img" src="" alt="" />
+      <figcaption id="lightbox-caption"></figcaption>
+    </figure>
+  </div>
 </section>
 
-<style>
-  .gallery-grid {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    grid-template-rows: repeat(2, 220px);
-    gap: 16px;
+<script define:vars={{ photos }}>
+  const items = document.querySelectorAll(".gallery-item");
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightbox-img");
+  const lightboxCaption = document.getElementById("lightbox-caption");
+  const closeBtn = document.getElementById("lightbox-close");
+  const prevBtn = document.getElementById("lightbox-prev");
+  const nextBtn = document.getElementById("lightbox-next");
+
+  let currentIndex = 0;
+
+  function openLightbox(index) {
+    currentIndex = index;
+    updateLightboxImage();
+    lightbox.classList.add("is-open");
+    lightbox.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
   }
 
-  .gallery-item:first-child {
-    grid-row: span 2;
+  function updateLightboxImage() {
+    const photo = photos[currentIndex];
+    lightboxImg.style.animation = "none";
+    void lightboxImg.offsetWidth;
+    lightboxImg.src = photo.src;
+    lightboxImg.alt = photo.alt;
+    lightboxCaption.textContent = photo.caption;
+    lightboxImg.style.animation = "lightbox-fade-in 0.35s ease forwards";
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove("is-open");
+    lightbox.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  function showNext() {
+    currentIndex = (currentIndex + 1) % photos.length;
+    updateLightboxImage();
+  }
+
+  function showPrev() {
+    currentIndex = (currentIndex - 1 + photos.length) % photos.length;
+    updateLightboxImage();
+  }
+
+  items.forEach((item) => {
+    item.addEventListener("click", () => {
+      openLightbox(Number(item.dataset.index));
+    });
+  });
+
+  closeBtn.addEventListener("click", closeLightbox);
+  nextBtn.addEventListener("click", showNext);
+  prevBtn.addEventListener("click", showPrev);
+
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (!lightbox.classList.contains("is-open")) return;
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowRight") showNext();
+    if (e.key === "ArrowLeft") showPrev();
+  });
+</script>
+
+<style>
+  .section-desc {
+    margin-top: 16px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 200px;
+    gap: 14px;
   }
 
   .gallery-item {
     position: relative;
     margin: 0;
+    padding: 0;
     overflow: hidden;
     border-radius: 4px;
     border: 1px solid var(--line);
-    transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    background: none;
+    cursor: pointer;
+    transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+  }
+
+  .gallery-item:nth-child(1) {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .gallery-item:nth-child(6) {
+    grid-column: span 2;
+  }
+
+  .gallery-item:nth-child(7) {
+    grid-column: span 2;
+    grid-row: span 2;
   }
 
   .gallery-item:hover {
     border-color: rgba(255, 63, 160, 0.5);
     box-shadow: 0 0 30px rgba(255, 63, 160, 0.18);
+    transform: translateY(-3px);
   }
 
   .gallery-item img {
@@ -80,18 +230,219 @@ const photos = [
     opacity: 1;
   }
 
-  @media (max-width: 720px) {
+  .gallery-caption {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--cream);
+    background: rgba(10, 7, 20, 0.55);
+    padding: 5px 10px;
+    border-radius: 2px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .gallery-item:hover .gallery-caption {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .gallery-zoom-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(10, 7, 20, 0.55);
+    color: var(--neon-cyan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .gallery-zoom-icon svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .gallery-item:hover .gallery-zoom-icon {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  @media (max-width: 860px) {
+    .gallery-grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 160px;
+    }
+
+    .gallery-item:nth-child(1),
+    .gallery-item:nth-child(7) {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+
+    .gallery-item:nth-child(6) {
+      grid-column: span 1;
+    }
+  }
+
+  @media (max-width: 520px) {
     .gallery-grid {
       grid-template-columns: 1fr;
-      grid-template-rows: none;
+      grid-auto-rows: 220px;
     }
 
-    .gallery-item {
-      height: 260px;
+    .gallery-item,
+    .gallery-item:nth-child(1),
+    .gallery-item:nth-child(6),
+    .gallery-item:nth-child(7) {
+      grid-column: span 1;
+      grid-row: span 1;
+    }
+  }
+
+  /* Lightbox */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(10, 7, 20, 0.94);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .lightbox.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .lightbox-figure {
+    margin: 0;
+    max-width: min(90vw, 1100px);
+    max-height: 86vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .lightbox-figure img {
+    max-width: 100%;
+    max-height: 76vh;
+    width: auto;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 0 60px rgba(255, 63, 160, 0.15);
+  }
+
+  @keyframes lightbox-fade-in {
+    from {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .lightbox-figure figcaption {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .lightbox-close,
+  .lightbox-nav {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--line);
+    color: var(--cream);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .lightbox-close:hover,
+  .lightbox-nav:hover {
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+    box-shadow: 0 0 18px rgba(55, 233, 255, 0.3);
+  }
+
+  .lightbox-close {
+    top: 24px;
+    right: 24px;
+    width: 42px;
+    height: 42px;
+  }
+
+  .lightbox-close svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .lightbox-nav {
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+  }
+
+  .lightbox-nav svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .lightbox-prev {
+    left: 24px;
+  }
+
+  .lightbox-next {
+    right: 24px;
+  }
+
+  @media (max-width: 720px) {
+    .lightbox-close {
+      top: 14px;
+      right: 14px;
     }
 
-    .gallery-item:first-child {
-      grid-row: auto;
+    .lightbox-prev {
+      left: 10px;
+    }
+
+    .lightbox-next {
+      right: 10px;
+    }
+
+    .lightbox-nav {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lightbox-figure img {
+      animation: none !important;
     }
   }
 </style>

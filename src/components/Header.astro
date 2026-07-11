@@ -12,11 +12,7 @@ const navLinks = [
 <header class="site-header" id="site-header">
   <div class="container header-inner">
     <a href="/#top" class="brand">
-      <span class="brand-jp">傘</span>
-      <span class="brand-name">
-        Yukimi
-        <span class="brand-name-jp">ゆきみ</span>
-      </span>
+      <img src="/images/logo-header.jpg" alt="Yukimi ゆきみ" class="brand-logo" />
     </a>
 
     <nav class="nav" aria-label="Navigation principale">
@@ -103,30 +99,16 @@ const navLinks = [
 
   .brand {
     display: flex;
-    align-items: baseline;
-    gap: 10px;
+    align-items: center;
+    flex-shrink: 0;
   }
 
-  .brand-jp {
-    font-family: var(--font-display);
-    color: var(--red);
-    font-size: 1.4rem;
-  }
-
-  .brand-name {
-    font-family: var(--font-display);
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--cream);
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-  }
-
-  .brand-name-jp {
-    font-size: 0.85rem;
-    color: var(--muted);
-    font-weight: 400;
+  .brand-logo {
+    height: 50px;
+    width: auto;
+    /* Fond noir du fichier source rendu transparent : ne laisse apparaître
+       que le trait rouge et le lettrage blanc, sur n'importe quel fond sombre. */
+    mix-blend-mode: screen;
   }
 
   .nav {
@@ -219,6 +201,10 @@ const navLinks = [
       background: rgba(20, 16, 13, 0.92);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
+    }
+
+    .brand-logo {
+      height: 40px;
     }
 
     .mobile-nav {
