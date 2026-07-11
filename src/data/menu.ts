@@ -26,7 +26,6 @@ export const menuCategories: MenuCategory[] = [
       { name: "Riz nature", jp: "ご飯", veg: true },
       { name: "Riz vinaigré", jp: "酢飯", veg: true },
       { name: "Udon, soupe miso", jp: "うどん", veg: true },
-      { name: "Ramen, soupe miso", jp: "味噌ラーメン", veg: true },
       { name: "Nems poulet", note: "2 pièces", jp: "チキン春巻き" },
       { name: "Accras de morue", note: "2 pièces", jp: "タラのフリッター" },
       { name: "Gyoza poulet", note: "3 pièces", jp: "餃子" },
