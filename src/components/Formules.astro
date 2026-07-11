@@ -1,0 +1,174 @@
+---
+import { pricing } from "../data/restaurant";
+---
+
+<section class="section" id="formules">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Formule unique</p>
+      <h2>À volonté, sans complication</h2>
+      <p class="section-desc">
+        Une formule simple midi et soir : vous commandez ce qui vous fait envie,
+        autant de fois que vous le souhaitez.
+      </p>
+    </div>
+
+    <div class="pricing-grid">
+      <article class="pricing-card">
+        <header>
+          <h3>Adulte</h3>
+        </header>
+        <ul class="pricing-rows">
+          <li>
+            <span>Midi (semaine)</span>
+            <span class="price">{pricing.adult.midiSemaine}</span>
+          </li>
+          <li>
+            <span>Midi (week-end)</span>
+            <span class="price">{pricing.adult.midiWeekend}</span>
+          </li>
+          <li>
+            <span>Soir (semaine)</span>
+            <span class="price">{pricing.adult.soirSemaine}</span>
+          </li>
+          <li>
+            <span>Soir (week-end)</span>
+            <span class="price">{pricing.adult.soirWeekend}</span>
+          </li>
+        </ul>
+      </article>
+
+      <article class="pricing-card pricing-card-accent">
+        <header>
+          <h3>Enfant</h3>
+          <span class="pricing-sub">Moins d'1m40</span>
+        </header>
+        <ul class="pricing-rows">
+          <li>
+            <span>Midi (semaine)</span>
+            <span class="price">{pricing.enfant.midiSemaine}</span>
+          </li>
+          <li>
+            <span>Midi (week-end)</span>
+            <span class="price">{pricing.enfant.midiWeekend}</span>
+          </li>
+          <li>
+            <span>Soir (semaine)</span>
+            <span class="price">{pricing.enfant.soirSemaine}</span>
+          </li>
+          <li>
+            <span>Soir (week-end)</span>
+            <span class="price">{pricing.enfant.soirWeekend}</span>
+          </li>
+        </ul>
+      </article>
+    </div>
+
+    <p class="pricing-weekend-note">{pricing.weekendDefinition}</p>
+
+    <ul class="pricing-notes">
+      {pricing.notes.map((note) => (
+        <li>{note}</li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .section-desc {
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 1rem;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  @media (max-width: 720px) {
+    .pricing-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .pricing-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 32px;
+  }
+
+  .pricing-card-accent {
+    border-color: rgba(217, 164, 65, 0.35);
+  }
+
+  .pricing-card header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .pricing-card h3 {
+    font-size: 1.4rem;
+  }
+
+  .pricing-sub {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .pricing-rows {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .pricing-rows li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0.98rem;
+  }
+
+  .pricing-rows li span:first-child {
+    color: var(--cream);
+    opacity: 0.85;
+  }
+
+  .price {
+    font-family: var(--font-display);
+    color: var(--gold);
+    font-size: 1.15rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pricing-weekend-note {
+    margin-top: 24px;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .pricing-notes {
+    margin: 24px 0 0;
+    padding: 20px 24px;
+    background: rgba(243, 232, 216, 0.04);
+    border-left: 2px solid var(--red);
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .pricing-notes li {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+</style>

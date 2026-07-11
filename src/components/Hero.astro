@@ -1,0 +1,133 @@
+---
+import Enso from "./Enso.astro";
+import { restaurant } from "../data/restaurant";
+---
+
+<section class="hero" id="top">
+  <div class="hero-media">
+    <img
+      src="/images/plateau.jpg"
+      alt="Assortiment de sushi, sashimi, yakitori et gyoza du restaurant Yukimi"
+      loading="eager"
+    />
+    <div class="hero-scrim"></div>
+  </div>
+
+  <Enso class="hero-enso" animate />
+
+  <div class="container hero-content">
+    <p class="eyebrow">Restaurant japonais à volonté · {restaurant.city}</p>
+    <h1>
+      Yukimi
+      <span class="hero-jp">ゆきみ</span>
+    </h1>
+    <p class="hero-text">
+      Sushi, yakitori et ramen à volonté dans une salle chaleureuse au cœur de
+      Montpellier. Une formule unique, un service attentionné, sans réservation compliquée.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-gold" href="#formules">Voir la formule</a>
+      <a class="btn btn-outline" href={restaurant.mapsDirectionsUrl} target="_blank" rel="noopener">
+        Itinéraire
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 92vh;
+    display: flex;
+    align-items: flex-end;
+    overflow: clip;
+  }
+
+  .hero-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(20, 16, 13, 0.55) 0%,
+      rgba(20, 16, 13, 0.35) 35%,
+      rgba(20, 16, 13, 0.92) 92%
+    );
+  }
+
+  .hero-enso {
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 340px;
+    height: 340px;
+    z-index: 1;
+    opacity: 0.9;
+  }
+
+  @media (max-width: 720px) {
+    .hero-enso {
+      width: 220px;
+      height: 220px;
+      top: -20px;
+      right: -40px;
+    }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding-bottom: 88px;
+    padding-top: 200px;
+    max-width: 640px;
+  }
+
+  .hero h1 {
+    font-size: clamp(3.2rem, 9vw, 5.6rem);
+    line-height: 0.95;
+    margin-top: 18px;
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .hero-jp {
+    font-size: clamp(1.4rem, 3vw, 1.8rem);
+    color: var(--blush);
+    font-weight: 500;
+  }
+
+  .hero-text {
+    margin-top: 24px;
+    max-width: 480px;
+    color: var(--cream);
+    opacity: 0.88;
+    font-size: 1.05rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 36px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 720px) {
+    .hero-content {
+      padding-top: 140px;
+      padding-bottom: 64px;
+    }
+  }
+</style>

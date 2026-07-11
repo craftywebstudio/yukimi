@@ -1,0 +1,120 @@
+---
+import { restaurant, openingHours } from "../data/restaurant";
+---
+
+<section class="section seigaiha" id="localisation">
+  <div class="container loc-grid">
+    <div>
+      <p class="eyebrow">Où nous trouver</p>
+      <h2>Rue de Galata, Montpellier</h2>
+      <p class="loc-address">{restaurant.address.full}</p>
+
+      <table class="hours-table">
+        <tbody>
+          {openingHours.map((day) => (
+            <tr>
+              <th scope="row">{day.day}</th>
+              <td>
+                {day.slots.map((slot) => (
+                  <span class="hours-slot">{slot}</span>
+                ))}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div class="loc-actions">
+        <a class="btn btn-gold" href={restaurant.mapsDirectionsUrl} target="_blank" rel="noopener">
+          Itinéraire
+        </a>
+        <a class="btn btn-outline" href={`tel:${restaurant.phoneHref}`}>
+          {restaurant.phone}
+        </a>
+      </div>
+    </div>
+
+    <div class="loc-map">
+      <iframe
+        src={restaurant.mapsEmbedUrl}
+        title="Localisation du restaurant Yukimi sur Google Maps"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+      ></iframe>
+    </div>
+  </div>
+</section>
+
+<style>
+  .loc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  @media (max-width: 860px) {
+    .loc-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .loc-address {
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: 1rem;
+  }
+
+  .hours-table {
+    margin-top: 32px;
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .hours-table tr {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .hours-table th,
+  .hours-table td {
+    padding: 12px 0;
+    text-align: left;
+    font-weight: 400;
+    font-size: 0.92rem;
+  }
+
+  .hours-table th {
+    color: var(--cream);
+    width: 40%;
+  }
+
+  .hours-table td {
+    color: var(--muted);
+  }
+
+  .hours-slot {
+    display: block;
+  }
+
+  .loc-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+
+  .loc-map {
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    min-height: 380px;
+  }
+
+  .loc-map iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 380px;
+    border: 0;
+    filter: grayscale(0.3) invert(0.92) contrast(0.9);
+  }
+</style>

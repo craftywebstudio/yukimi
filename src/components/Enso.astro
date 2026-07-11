@@ -1,0 +1,49 @@
+---
+interface Props {
+  class?: string;
+  animate?: boolean;
+}
+const { class: className = "", animate = false } = Astro.props;
+---
+
+<svg
+  class={`enso ${className} ${animate ? "enso-animate" : ""}`}
+  viewBox="0 0 200 200"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+>
+  <path
+    class="enso-stroke"
+    d="M138 36C120 24 98 20 78 26C50 34 28 58 24 88C20 120 38 152 68 166C96 179 132 174 154 152C174 132 180 100 168 74"
+    stroke="currentColor"
+    stroke-width="14"
+    stroke-linecap="round"
+  ></path>
+</svg>
+
+<style>
+  .enso {
+    color: var(--red);
+    overflow: visible;
+  }
+
+  .enso-animate .enso-stroke {
+    stroke-dasharray: 520;
+    stroke-dashoffset: 520;
+    animation: draw-enso 1.8s ease-out 0.2s forwards;
+  }
+
+  @keyframes draw-enso {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .enso-animate .enso-stroke {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+  }
+</style>

@@ -1,0 +1,61 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { restaurant } from "../data/restaurant";
+---
+
+<Layout title="Mentions légales — Yukimi" description="Mentions légales du restaurant Yukimi à Montpellier.">
+  <Header />
+  <main class="section legal">
+    <div class="container legal-content">
+      <h1>Mentions légales</h1>
+
+      <p>
+        <strong>Nom commercial&nbsp;:</strong> Yukimi<br />
+        <strong>Activité&nbsp;:</strong> Restaurant japonais<br />
+        <strong>Adresse&nbsp;:</strong> {restaurant.address.full}<br />
+        <strong>Téléphone&nbsp;:</strong> {restaurant.phone}
+      </p>
+
+      <p>
+        <em>
+          À compléter avec la raison sociale exacte, le numéro SIRET, la forme
+          juridique et le nom du représentant légal de l'établissement.
+        </em>
+      </p>
+
+      <h2>Hébergement</h2>
+      <p>Ce site est hébergé par Cloudflare, Inc.</p>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .legal-content {
+    max-width: 720px;
+    padding-top: 40px;
+  }
+
+  .legal-content h1 {
+    font-size: 2.2rem;
+    margin-bottom: 32px;
+  }
+
+  .legal-content h2 {
+    font-size: 1.3rem;
+    margin-top: 32px;
+    margin-bottom: 12px;
+  }
+
+  .legal-content p {
+    color: var(--muted);
+    margin-bottom: 16px;
+    line-height: 1.7;
+  }
+
+  .legal-content strong {
+    color: var(--cream);
+  }
+</style>

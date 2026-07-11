@@ -1,0 +1,160 @@
+---
+import { menuCategories } from "../data/menu";
+---
+
+<section class="section seigaiha" id="carte">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">La carte</p>
+      <h2>Tout ce que vous pouvez commander</h2>
+      <p class="section-desc">
+        <span class="veg-dot" aria-hidden="true"></span>
+        indique les plats végétariens.
+      </p>
+    </div>
+
+    <div class="carte-tabs" role="tablist" aria-label="Catégories de la carte">
+      {menuCategories.map((cat, i) => (
+        <button
+          class="carte-tab"
+          role="tab"
+          aria-selected={i === 0 ? "true" : "false"}
+          data-target={cat.id}
+        >
+          {cat.title}
+        </button>
+      ))}
+    </div>
+
+    <div class="carte-panels">
+      {menuCategories.map((cat, i) => (
+        <div
+          class="carte-panel"
+          id={`panel-${cat.id}`}
+          role="tabpanel"
+          style={i === 0 ? "" : "display:none"}
+        >
+          {cat.subtitle && <p class="carte-panel-sub">{cat.subtitle}</p>}
+          <ul class="carte-list">
+            {cat.items.map((item) => (
+              <li>
+                <div class="carte-item-name">
+                  {item.veg && <span class="veg-dot" aria-hidden="true"></span>}
+                  <span>{item.name}</span>
+                  {item.jp && <span class="carte-item-jp">{item.jp}</span>}
+                </div>
+                {item.note && <p class="carte-item-note">{item.note}</p>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const tabs = document.querySelectorAll<HTMLButtonElement>(".carte-tab");
+  const panels = document.querySelectorAll<HTMLElement>(".carte-panel");
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      tabs.forEach((t) => t.setAttribute("aria-selected", "false"));
+      tab.setAttribute("aria-selected", "true");
+
+      const target = tab.dataset.target;
+      panels.forEach((panel) => {
+        panel.style.display = panel.id === `panel-${target}` ? "" : "none";
+      });
+    });
+  });
+</script>
+
+<style>
+  .section-desc {
+    margin-top: 16px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+  }
+
+  .carte-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+
+  .carte-tab {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    padding: 10px 18px;
+    border-radius: 2px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+  }
+
+  .carte-tab:hover {
+    color: var(--cream);
+    border-color: var(--gold);
+  }
+
+  .carte-tab[aria-selected="true"] {
+    background: var(--red);
+    border-color: var(--red);
+    color: var(--cream);
+  }
+
+  .carte-panel-sub {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .carte-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 48px;
+  }
+
+  @media (max-width: 720px) {
+    .carte-list {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .carte-list li {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .carte-item-name {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .carte-item-name > span:nth-child(2) {
+    font-size: 0.98rem;
+  }
+
+  .carte-item-jp {
+    color: var(--muted);
+    font-size: 0.82rem;
+    margin-left: auto;
+  }
+
+  .carte-item-note {
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+</style>

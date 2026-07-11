@@ -1,0 +1,30 @@
+---
+import { closureNotice } from "../data/restaurant";
+---
+
+{
+  closureNotice.active && (
+    <div class="closure-banner" role="status">
+      <div class="container closure-inner">
+        <p>{closureNotice.message}</p>
+      </div>
+    </div>
+  )
+}
+
+<style>
+  .closure-banner {
+    background: var(--red);
+    color: var(--cream);
+  }
+
+  .closure-inner {
+    padding: 10px 24px;
+    text-align: center;
+  }
+
+  .closure-banner p {
+    font-size: 0.85rem;
+    letter-spacing: 0.01em;
+  }
+</style>

@@ -1,0 +1,77 @@
+---
+import "../styles/global.css";
+import { restaurant, openingHours } from "../data/restaurant";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Yukimi — Restaurant japonais à volonté à Montpellier",
+  description = "Yukimi, restaurant japonais à volonté rue de Galata à Montpellier. Sushi, yakitori, ramen et desserts, formule unique midi et soir.",
+} = Astro.props;
+
+const siteUrl = "https://yukimi-montpellier.fr";
+const dayMap: Record<string, string> = {
+  Lundi: "Monday",
+  Mardi: "Tuesday",
+  Mercredi: "Wednesday",
+  Jeudi: "Thursday",
+  Vendredi: "Friday",
+  Samedi: "Saturday",
+  Dimanche: "Sunday",
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  name: "Yukimi",
+  servesCuisine: "Japonaise",
+  priceRange: "€€",
+  telephone: restaurant.phone,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: restaurant.address.street,
+    postalCode: restaurant.address.postalCode,
+    addressLocality: restaurant.address.city,
+    addressCountry: "FR",
+  },
+  sameAs: [restaurant.social.facebook],
+  openingHoursSpecification: openingHours.flatMap((day) =>
+    day.slots.map((slot) => {
+      const [opens, closes] = slot.split("–").map((s) => s.trim().replace("h", ":").padEnd(5, "0"));
+      return {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: dayMap[day.day],
+        opens,
+        closes,
+      };
+    })
+  ),
+};
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/jpeg" href="/images/logo-red-on-black.jpg" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={siteUrl} />
+
+    <meta property="og:type" content="restaurant" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={`${siteUrl}/images/plateau.jpg`} />
+    <meta property="og:locale" content="fr_FR" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
