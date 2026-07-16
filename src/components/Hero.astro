@@ -16,7 +16,7 @@ import { restaurant } from "../data/restaurant";
   <div class="glow-orb hero-orb-cyan" aria-hidden="true"></div>
 
   <div class="container hero-content">
-    <p class="eyebrow hero-eyebrow">Restaurant japonais à volonté · {restaurant.city}</p>
+    <p class="eyebrow hero-eyebrow">ようこそ · WELCOME</p>
 
     <div class="hero-lockup">
       <img
@@ -25,23 +25,25 @@ import { restaurant } from "../data/restaurant";
         class="hero-logo"
       />
       <div class="hero-text-block">
-        <h1 class="visually-hidden">Yukimi — restaurant japonais à volonté à Montpellier</h1>
+        <h1 class="hero-title">
+          YUKIMI
+          <span class="hero-title-sub">Restaurant japonais</span>
+        </h1>
         <p class="hero-text">
           Sushi et yakitori à volonté dans une salle chaleureuse au cœur
           de Montpellier. Une formule unique, un service attentionné.
         </p>
         <div class="hero-actions">
-          <a class="btn btn-gold" href={`tel:${restaurant.phoneHref}`}>
-            <svg class="icon-phone" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.5 21 3 13.5 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1L6.6 10.8z"
-                fill="currentColor"
-              ></path>
-            </svg>
-            Réserver · {restaurant.phone}
+          <a class="btn btn-neon" href="#formules">Voir la formule</a>
+          <a class="btn btn-outline" href={restaurant.mapsDirectionsUrl} target="_blank" rel="noopener">
+            Itinéraire
           </a>
-          <a class="btn btn-outline" href="#formules">Voir la formule</a>
         </div>
+        <p class="hero-meta">
+          <span>{restaurant.address.full}</span>
+          <span class="hero-meta-dot" aria-hidden="true">✦</span>
+          <span>{restaurant.phone}</span>
+        </p>
       </div>
     </div>
   </div>
@@ -166,6 +168,29 @@ import { restaurant } from "../data/restaurant";
     max-width: 460px;
   }
 
+  .hero-title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 0.92;
+    font-size: clamp(2.6rem, 5.6vw, 4.4rem);
+    letter-spacing: 0.02em;
+    color: var(--cream);
+    text-shadow: 0 0 28px rgba(255, 63, 160, 0.35);
+    margin-bottom: 18px;
+  }
+
+  .hero-title-sub {
+    display: block;
+    font-size: clamp(0.95rem, 1.6vw, 1.2rem);
+    font-family: var(--font-mono);
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 14px rgba(55, 233, 255, 0.4);
+    margin-top: 10px;
+  }
+
   .hero-text {
     color: var(--cream);
     opacity: 0.9;
@@ -180,15 +205,20 @@ import { restaurant } from "../data/restaurant";
     flex-wrap: wrap;
   }
 
-  .icon-phone {
-    width: 15px;
-    height: 15px;
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 22px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: var(--muted);
   }
 
-  .hero-actions .btn-gold {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+  .hero-meta-dot {
+    color: var(--neon-pink);
+    font-size: 0.7rem;
   }
 
   @media (prefers-reduced-motion: reduce) {

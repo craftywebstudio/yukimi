@@ -176,6 +176,26 @@ button {
   box-shadow: 0 0 20px rgba(55, 233, 255, 0.3);
 }
 
+/* Bouton néon rose/magenta — CTA principaux façon enseigne Akihabara */
+.btn-neon {
+  background: rgba(255, 63, 160, 0.1);
+  border-color: var(--neon-pink);
+  color: var(--cream);
+  border-radius: 999px;
+  text-transform: uppercase;
+  box-shadow: 0 0 14px rgba(255, 63, 160, 0.35), inset 0 0 14px rgba(255, 63, 160, 0.1);
+}
+
+.btn-neon:hover {
+  background: var(--neon-pink);
+  color: var(--ink);
+  box-shadow: 0 0 24px rgba(255, 63, 160, 0.6), 0 0 48px rgba(255, 63, 160, 0.35);
+}
+
+.btn-outline {
+  border-radius: 999px;
+}
+
 .section {
   padding: 96px 0;
   position: relative;
