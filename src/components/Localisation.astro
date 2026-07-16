@@ -1,5 +1,20 @@
 ---
 import { restaurant, openingHours } from "../data/restaurant";
+
+// Regroupe les jours consécutifs ayant les mêmes horaires (ex: Lun — Mar, Mer — Dim),
+// comme sur le site de référence, plutôt qu'une ligne par jour.
+const groupedHours: { label: string; slots: string[] }[] = [];
+for (const day of openingHours) {
+  const last = groupedHours[groupedHours.length - 1];
+  const sameSlots = last && JSON.stringify(last.slots) === JSON.stringify(day.slots);
+  if (sameSlots) {
+    const days = last.label.split(" — ");
+    const firstDay = days[0];
+    last.label = `${firstDay} — ${day.day}`;
+  } else {
+    groupedHours.push({ label: day.day, slots: day.slots });
+  }
+}
 ---
 
 <section class="section seigaiha" id="localisation">
@@ -28,20 +43,14 @@ import { restaurant, openingHours } from "../data/restaurant";
 
         <div class="loc-block">
           <h3 class="loc-block-title">Horaires</h3>
-          <table class="hours-table">
-            <tbody>
-              {openingHours.map((day) => (
-                <tr>
-                  <th scope="row">{day.day}</th>
-                  <td>
-                    {day.slots.map((slot) => (
-                      <span class="hours-slot">{slot}</span>
-                    ))}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div class="hours-list">
+            {groupedHours.map((group) => (
+              <p class="hours-row">
+                <span class="hours-days">{group.label}</span>
+                <span class="hours-slots">{group.slots.join(" · ")}</span>
+              </p>
+            ))}
+          </div>
         </div>
 
         <div class="loc-block">
@@ -79,15 +88,19 @@ import { restaurant, openingHours } from "../data/restaurant";
   }
 
   .loc-blocks {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 32px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
   }
 
-  @media (max-width: 560px) {
-    .loc-blocks {
-      grid-template-columns: 1fr;
-    }
+  .loc-block {
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .loc-block:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
   }
 
   .loc-block-title {
@@ -126,43 +139,28 @@ import { restaurant, openingHours } from "../data/restaurant";
     letter-spacing: 0.02em;
   }
 
-  .hours-table {
-    width: 100%;
-    border-collapse: collapse;
+  .hours-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
   }
 
-  .hours-table tr {
-    border-bottom: 1px solid var(--line);
-    transition: background 0.2s ease;
+  .hours-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 0.92rem;
   }
 
-  .hours-table tr:last-child {
-    border-bottom: none;
-  }
-
-  .hours-table tr:hover {
-    background: linear-gradient(90deg, rgba(55, 233, 255, 0.05), transparent 70%);
-  }
-
-  .hours-table th,
-  .hours-table td {
-    padding: 8px 0;
-    text-align: left;
-    font-weight: 400;
-    font-size: 0.88rem;
-  }
-
-  .hours-table th {
+  .hours-days {
     color: var(--cream);
-    width: 46%;
+    font-weight: 600;
+    white-space: nowrap;
   }
 
-  .hours-table td {
+  .hours-slots {
     color: var(--muted);
-  }
-
-  .hours-slot {
-    display: block;
+    text-align: right;
   }
 
   .loc-map {
