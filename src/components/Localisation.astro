@@ -3,44 +3,63 @@ import { restaurant, openingHours } from "../data/restaurant";
 ---
 
 <section class="section seigaiha" id="localisation">
-  <div class="container loc-grid">
-    <div data-reveal>
-      <p class="eyebrow">Où nous trouver</p>
-      <h2>Rue de Galata, Montpellier</h2>
-      <p class="loc-address">{restaurant.address.full}</p>
-
-      <table class="hours-table">
-        <tbody>
-          {openingHours.map((day) => (
-            <tr>
-              <th scope="row">{day.day}</th>
-              <td>
-                {day.slots.map((slot) => (
-                  <span class="hours-slot">{slot}</span>
-                ))}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <div class="loc-actions">
-        <a class="btn btn-gold" href={restaurant.mapsDirectionsUrl} target="_blank" rel="noopener">
-          Itinéraire
-        </a>
-        <a class="btn btn-outline" href={`tel:${restaurant.phoneHref}`}>
-          {restaurant.phone}
-        </a>
-      </div>
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">アクセス</p>
+      <h2>Nous trouver</h2>
     </div>
 
-    <div class="loc-map" data-reveal>
-      <iframe
-        src={restaurant.mapsEmbedUrl}
-        title="Localisation du restaurant Yukimi sur Google Maps"
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-      ></iframe>
+    <div class="loc-grid">
+      <div class="loc-blocks" data-reveal-stagger>
+        <div class="loc-block">
+          <h3 class="loc-block-title">Adresse</h3>
+          <p class="loc-block-text">{restaurant.address.full}</p>
+          <a class="loc-block-link" href={restaurant.mapsDirectionsUrl} target="_blank" rel="noopener">
+            Obtenir l'itinéraire
+          </a>
+        </div>
+
+        <div class="loc-block">
+          <h3 class="loc-block-title">Téléphone</h3>
+          <a class="loc-block-link loc-block-phone" href={`tel:${restaurant.phoneHref}`}>
+            {restaurant.phone}
+          </a>
+        </div>
+
+        <div class="loc-block">
+          <h3 class="loc-block-title">Horaires</h3>
+          <table class="hours-table">
+            <tbody>
+              {openingHours.map((day) => (
+                <tr>
+                  <th scope="row">{day.day}</th>
+                  <td>
+                    {day.slots.map((slot) => (
+                      <span class="hours-slot">{slot}</span>
+                    ))}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="loc-block">
+          <h3 class="loc-block-title">Réseaux sociaux</h3>
+          <a class="loc-block-link" href={restaurant.social.facebook} target="_blank" rel="noopener">
+            facebook.com/yukimiFR
+          </a>
+        </div>
+      </div>
+
+      <div class="loc-map" data-reveal>
+        <iframe
+          src={restaurant.mapsEmbedUrl}
+          title="Localisation du restaurant Yukimi sur Google Maps"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
     </div>
   </div>
 </section>
@@ -59,14 +78,55 @@ import { restaurant, openingHours } from "../data/restaurant";
     }
   }
 
-  .loc-address {
-    margin-top: 14px;
+  .loc-blocks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 40px;
+  }
+
+  @media (max-width: 560px) {
+    .loc-blocks {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .loc-block-title {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px rgba(55, 233, 255, 0.35);
+    margin-bottom: 10px;
+  }
+
+  .loc-block-text {
     color: var(--muted);
-    font-size: 1rem;
+    font-size: 0.98rem;
+    margin-bottom: 8px;
+  }
+
+  .loc-block-link {
+    display: inline-block;
+    color: var(--cream);
+    font-size: 0.98rem;
+    font-weight: 600;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 2px;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .loc-block-link:hover {
+    color: var(--neon-pink);
+    border-color: var(--neon-pink);
+  }
+
+  .loc-block-phone {
+    font-family: var(--font-mono);
+    letter-spacing: 0.02em;
   }
 
   .hours-table {
-    margin-top: 32px;
     width: 100%;
     border-collapse: collapse;
   }
@@ -76,21 +136,25 @@ import { restaurant, openingHours } from "../data/restaurant";
     transition: background 0.2s ease;
   }
 
+  .hours-table tr:last-child {
+    border-bottom: none;
+  }
+
   .hours-table tr:hover {
     background: linear-gradient(90deg, rgba(55, 233, 255, 0.05), transparent 70%);
   }
 
   .hours-table th,
   .hours-table td {
-    padding: 12px 0;
+    padding: 8px 0;
     text-align: left;
     font-weight: 400;
-    font-size: 0.92rem;
+    font-size: 0.88rem;
   }
 
   .hours-table th {
     color: var(--cream);
-    width: 40%;
+    width: 46%;
   }
 
   .hours-table td {
@@ -99,13 +163,6 @@ import { restaurant, openingHours } from "../data/restaurant";
 
   .hours-slot {
     display: block;
-  }
-
-  .loc-actions {
-    display: flex;
-    gap: 16px;
-    margin-top: 32px;
-    flex-wrap: wrap;
   }
 
   .loc-map {
